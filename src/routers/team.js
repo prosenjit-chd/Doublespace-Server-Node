@@ -29,8 +29,20 @@ router.get('/teams', async (req, res) => {
     }
 })
 
+// GET Single Project API
+router.get('/teams/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const team = await Team.findOne({ _id: id });
+        res.send(team);
+        // res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
 
-// Post Review
+// Post Team
 
 router.post('/teams', async (req, res) => {
     const teams = new Team(req.body)
@@ -57,4 +69,21 @@ router.delete('/teams/:id', async (req, res) => {
     }
 })
 
+// UPDATE API
+router.put('/teams/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updatedData = req.body;
+        const options = { new: true };
+
+        const result = await Team.findByIdAndUpdate(
+            id, updatedData, options
+        )
+
+        res.send(result)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
 module.exports = router;

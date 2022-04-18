@@ -29,6 +29,18 @@ router.get('/reviews', async (req, res) => {
     }
 })
 
+// GET Single Review API
+router.get('/reviews/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const review = await Review.findOne({ _id: id });
+        res.send(review);
+        // res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
 
 // Post Review
 
@@ -54,6 +66,24 @@ router.delete('/reviews/:id', async (req, res) => {
         res.send(review)
     } catch (e) {
         res.status(500).send()
+    }
+})
+
+// UPDATE API
+router.put('/reviews/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updatedData = req.body;
+        const options = { new: true };
+
+        const result = await Review.findByIdAndUpdate(
+            id, updatedData, options
+        )
+
+        res.send(result)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
     }
 })
 

@@ -73,4 +73,22 @@ router.delete('/projects/:id', async (req, res) => {
     }
 })
 
+// UPDATE API
+router.put('/projects/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updatedData = req.body;
+        const options = { new: true };
+
+        const result = await Project.findByIdAndUpdate(
+            id, updatedData, options
+        )
+
+        res.send(result)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
+
 module.exports = router;
