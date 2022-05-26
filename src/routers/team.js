@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const auth = require('../middlewares/auth');
 const router = new express.Router()
 
 const Team = require('../models/team')
@@ -44,7 +45,7 @@ router.get('/teams/:id', async (req, res) => {
 
 // Post Team
 
-router.post('/teams', async (req, res) => {
+router.post('/teams', auth, async (req, res) => {
     const teams = new Team(req.body)
 
     try {
@@ -56,7 +57,7 @@ router.post('/teams', async (req, res) => {
 })
 
 // DELETE Review
-router.delete('/teams/:id', async (req, res) => {
+router.delete('/teams/:id', auth, async (req, res) => {
     try {
         const team = await Team.findOneAndDelete({ _id: req.params.id })
         if (!team) {
@@ -70,7 +71,7 @@ router.delete('/teams/:id', async (req, res) => {
 })
 
 // UPDATE API
-router.put('/teams/:id', async (req, res) => {
+router.put('/teams/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
         const updatedData = req.body;

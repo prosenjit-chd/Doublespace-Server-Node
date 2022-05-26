@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../middlewares/auth');
 const router = express.Router();
 
 
@@ -45,7 +46,7 @@ router.get('/projects/:id', async (req, res) => {
 })
 
 //POST Add Project Admin API 
-router.post('/projects', async (req, res) => {
+router.post('/projects', auth, async (req, res) => {
     const project = new Project(req.body)
 
     try {
@@ -57,7 +58,7 @@ router.post('/projects', async (req, res) => {
 })
 
 // DELETE Project
-router.delete('/projects/:id', async (req, res) => {
+router.delete('/projects/:id', auth, async (req, res) => {
     try {
         // const task = await Task.findOne({ _id:req.params.id, owner: req.user._id })
         const project = await Project.findOneAndDelete({ _id: req.params.id })
@@ -74,7 +75,7 @@ router.delete('/projects/:id', async (req, res) => {
 })
 
 // UPDATE API
-router.put('/projects/:id', async (req, res) => {
+router.put('/projects/:id', auth, async (req, res) => {
     try {
         const id = req.params.id;
         const updatedData = req.body;
